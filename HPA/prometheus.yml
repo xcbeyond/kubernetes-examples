@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+    prometheus: prometheus
+spec:
+ replicas: 1
+ baseImage: xcbeyond/prometheus
+ version: latest
+ serviceMonitorSelector:
+   matchLabels:
+     service-monitor: funcion
+ resources:
+   requests:
+     momory: 300Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  labels:
+    app: prometheus
+    prometheus: prometheus
+spec:
+  selector:
+    prometheus: prometheus
+  port:
+  - name: http
+    port: 9090
